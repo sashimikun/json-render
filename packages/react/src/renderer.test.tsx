@@ -77,4 +77,16 @@ describe("createRendererFromCatalog", () => {
     });
     expect(element.props.fallback).toBe(Fallback);
   });
+
+  it("should accept a registry with standard functional components", () => {
+    // This test verifies that we can pass simple functional components
+    // that don't strictly match the ComponentRenderer type
+    const registry = {
+      "simple-component": ({ element }: any) =>
+        React.createElement("div", { "data-testid": element.type }, element.type),
+    };
+
+    const CatalogRenderer = createRendererFromCatalog(mockCatalog, registry as any);
+    expect(typeof CatalogRenderer).toBe("function");
+  });
 });

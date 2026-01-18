@@ -21,7 +21,13 @@ export interface ComponentRenderProps<P = Record<string, unknown>> {
   /** Rendered children */
   children?: ReactNode;
   /** Execute an action */
-  onAction?: (action: Action) => void;
+  onAction?: (
+    action: Action,
+    options?: {
+      event?: React.SyntheticEvent;
+      [key: string]: unknown;
+    },
+  ) => void;
   /** Whether the parent is loading */
   loading?: boolean;
 }
@@ -36,7 +42,10 @@ export type ComponentRenderer<P = Record<string, unknown>> = ComponentType<
 /**
  * Registry of component renderers
  */
-export type ComponentRegistry = Record<string, ComponentRenderer<any>>;
+export type ComponentRegistry = Record<
+  string,
+  ComponentRenderer<any> | ComponentType<any>
+>;
 
 /**
  * Props for the Renderer component
