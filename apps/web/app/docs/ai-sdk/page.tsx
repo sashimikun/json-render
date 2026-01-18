@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     : '';
 
   const result = streamText({
-    model: 'anthropic/claude-haiku-4.5',
+    model: process.env.AI_GATEWAY_MODEL || 'anthropic/claude-haiku-4.5',
     system: systemPrompt + contextPrompt,
     prompt,
   });
@@ -45,6 +45,60 @@ export async function POST(req: Request) {
     },
   });
 }`}</Code>
+
+      <h2 className="text-xl font-semibold mt-12 mb-4">Choosing a Model</h2>
+      <p className="text-sm text-muted-foreground mb-4">
+        We recommend starting with smaller, faster models like Haiku for most UI
+        generation tasks. Use the{" "}
+        <code className="text-foreground">AI_GATEWAY_MODEL</code> environment
+        variable to switch models without changing code.
+      </p>
+
+      <div className="my-6 w-full overflow-y-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="text-left font-medium py-2">Model</th>
+              <th className="text-left font-medium py-2">Best For</th>
+              <th className="text-left font-medium py-2">Cost</th>
+              <th className="text-left font-medium py-2">Speed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b">
+              <td className="py-2">claude-haiku-4.5</td>
+              <td className="py-2">Most UI tasks, fast iterations</td>
+              <td className="py-2">$</td>
+              <td className="py-2">Fastest</td>
+            </tr>
+            <tr className="border-b">
+              <td className="py-2">claude-3-5-sonnet</td>
+              <td className="py-2">Complex logic, creative layouts</td>
+              <td className="py-2">$$</td>
+              <td className="py-2">Fast</td>
+            </tr>
+            <tr className="border-b">
+              <td className="py-2">claude-3-opus</td>
+              <td className="py-2">Complex reasoning (overkill for UI)</td>
+              <td className="py-2">$$$</td>
+              <td className="py-2">Slow</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p className="text-sm text-muted-foreground mb-4">
+        See the full list of available models in the{" "}
+        <a
+          href="https://vercel.com/docs/ai/models"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-foreground hover:underline"
+        >
+          Vercel AI Gateway documentation
+        </a>
+        .
+      </p>
 
       <h2 className="text-xl font-semibold mt-12 mb-4">Client-Side Hook</h2>
       <p className="text-sm text-muted-foreground mb-4">

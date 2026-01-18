@@ -100,7 +100,7 @@ export async function POST(req: Request) {
   const systemPrompt = generateCatalogPrompt(catalog);
 
   const result = streamText({
-    model: 'anthropic/claude-haiku-4.5',
+    model: process.env.AI_GATEWAY_MODEL || 'anthropic/claude-haiku-4.5',
     system: systemPrompt,
     prompt,
   });
