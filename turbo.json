@@ -1,7 +1,12 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "globalEnv": ["AI_GATEWAY_MODEL"],
+  "globalEnv": [
+    "AI_GATEWAY_MODEL",
+    "CLOUDFLARE_ACCOUNT_ID",
+    "CLOUDFLARE_GATEWAY_NAME",
+    "ANTHROPIC_API_KEY"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

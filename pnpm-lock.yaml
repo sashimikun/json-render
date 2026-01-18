@@ -136,6 +136,52 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  examples/cloudflare-gateway:
+    dependencies:
+      '@json-render/codegen':
+        specifier: workspace:*
+        version: link:../../packages/codegen
+      '@json-render/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@json-render/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      next:
+        specifier: 16.1.1
+        version: 16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react:
+        specifier: 19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: 19.2.3
+        version: 19.2.3(react@19.2.3)
+      shiki:
+        specifier: ^3.0.0
+        version: 3.21.0
+      zod:
+        specifier: ^4.0.0
+        version: 4.3.5
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.19.6
+      '@types/react':
+        specifier: 19.2.3
+        version: 19.2.3
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.3)
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.2(jiti@2.6.1)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.2
+
   examples/dashboard:
     dependencies:
       '@ai-sdk/gateway':
