@@ -1,5 +1,5 @@
 import type { UITree } from "@json-render/core";
-import { collectUsedComponents, serializeProps } from "@json-render/codegen";
+import { collectUsedComponents, generateJSX } from "@json-render/codegen";
 import { componentTemplates } from "./templates";
 
 export interface ExportedFile {
@@ -229,7 +229,7 @@ function generateMainPage(
   data: Record<string, unknown>,
 ): string {
   const imports = Array.from(components).sort().join(", ");
-  const jsx = generateJSX(tree, tree.root, 4);
+  const jsx = generateJSX(tree, tree.root, { indent: 4 });
   const dataStr = JSON.stringify(data, null, 2).replace(/\n/g, "\n  ");
 
   return `"use client";
@@ -246,66 +246,6 @@ ${jsx}
   );
 }
 `;
-}
-
-function generateJSX(tree: UITree, key: string, indent: number): string {
-  const element = tree.elements[key];
-  if (!element) return "";
-
-  const spaces = " ".repeat(indent);
-  const componentName = element.type;
-
-  // Filter out null/undefined props and convert data paths to data references
-  const propsObj: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(element.props)) {
-    if (v === null || v === undefined) continue;
-
-    // Convert *Path props to actual data values
-    if (
-      typeof v === "string" &&
-      (k.endsWith("Path") || k === "bindPath" || k === "dataPath")
-    ) {
-      // Keep as a special marker for the component
-      propsObj[k] = v;
-    } else {
-      propsObj[k] = v;
-    }
-  }
-
-  // Add data prop for components that need it
-  const needsData =
-    Object.keys(propsObj).some(
-      (k) => k.endsWith("Path") || k === "bindPath" || k === "dataPath",
-    ) || ["Chart", "Table", "Metric", "List"].includes(componentName);
-
-  const propsStr = serializeProps(propsObj);
-  const dataAttr = needsData ? " data={data}" : "";
-
-  const hasChildren = element.children && element.children.length > 0;
-
-  if (!hasChildren) {
-    if (propsStr || dataAttr) {
-      return `${spaces}<${componentName}${dataAttr}${propsStr ? " " + propsStr : ""} />`;
-    }
-    return `${spaces}<${componentName} />`;
-  }
-
-  const lines: string[] = [];
-  if (propsStr || dataAttr) {
-    lines.push(
-      `${spaces}<${componentName}${dataAttr}${propsStr ? " " + propsStr : ""}>`,
-    );
-  } else {
-    lines.push(`${spaces}<${componentName}>`);
-  }
-
-  for (const childKey of element.children!) {
-    lines.push(generateJSX(tree, childKey, indent + 2));
-  }
-
-  lines.push(`${spaces}</${componentName}>`);
-
-  return lines.join("\n");
 }
 
 function generateReadme(projectName: string): string {

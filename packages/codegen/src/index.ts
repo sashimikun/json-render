@@ -13,4 +13,6 @@ export {
   type SerializeOptions,
 } from "./serialize";
 
+export { generateJSX, type GenerateJSXOptions } from "./react";
+
 export type { GeneratedFile, CodeGenerator } from "./types";
