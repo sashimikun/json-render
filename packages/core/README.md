@@ -9,6 +9,7 @@
 - **Enhanced Validation**: Built-in validation functions with custom catalog functions support
 - **Type-Safe Catalog**: Define component schemas using Zod for full type safety
 - **Framework Agnostic**: Core logic is independent of UI frameworks
+- **Python Support**: Generate compatible JSONL from Python backends using the `json-render` PyPI package.
 
 ## Installation
 
@@ -16,6 +17,12 @@
 npm install @json-render/core
 # or
 pnpm add @json-render/core
+```
+
+For Python backends:
+
+```bash
+pip install json-render
 ```
 
 ## Quick Start
@@ -56,6 +63,37 @@ const catalog = createCatalog({
     customValidation: (value) => typeof value === 'string' && value.length > 0,
   },
 });
+```
+
+### Python Usage
+
+If you are using a Python backend to generate the AI prompt, you can use the `json-render` Python package:
+
+```python
+from json_render.catalog import ComponentDefinition, ActionDefinition, CatalogConfig, create_catalog, generate_catalog_prompt
+
+# Define catalog
+config = CatalogConfig(
+    name="My Dashboard",
+    components={
+        "Card": ComponentDefinition(
+            props={"title": "string", "description": "string"},
+            has_children=True,
+            description="A card container"
+        ),
+        "Button": ComponentDefinition(
+            props={"label": "string", "action": "object"},
+            description="A clickable button"
+        )
+    },
+    actions={
+        "submit": ActionDefinition(description="Submit the form")
+    }
+)
+catalog = create_catalog(config)
+
+# Generate system prompt
+prompt = generate_catalog_prompt(catalog)
 ```
 
 ### Visibility Conditions
